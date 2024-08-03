@@ -12,7 +12,7 @@ const organizations = [
   'Organization 2',
   'Organization 3',
   'Organization 4',
-  'Organization 5'
+  'Organization 5',
 ];
 
 const SelectOrganizationScreen = () => {
@@ -23,7 +23,7 @@ const SelectOrganizationScreen = () => {
   const handleSelect = (organization) => {
     setSelectedOrganization(organization);
     setDropdownVisible(false);
-    navigation.navigate('NextScreen', { organization }); // Replace 'NextScreen' with your target screen
+    navigation.navigate('Main', { organization }); // Navigate to Main which contains the BottomTabNavigator
   };
 
   return (

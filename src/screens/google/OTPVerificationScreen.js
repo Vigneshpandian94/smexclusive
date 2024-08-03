@@ -5,9 +5,10 @@ import Arrow from '../../assets/svg/google/Arrow.svg';
 import Splash from '../../assets/svg/splash/Splash.svg';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { useNavigation } from '@react-navigation/native';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const OTPVerificationScreen = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
   const [timer, setTimer] = useState(30);
   const [otp, setOtp] = useState(['', '', '', '', '']);
   const inputRefs = useRef([]);
@@ -39,24 +40,31 @@ const OTPVerificationScreen = () => {
     }
   };
 
-  const validateOtp = () => {
+  const verifyOtp = async () => {
     if (otp.join('') === '12345') {
+      await EncryptedStorage.setItem('otp', '12345');
+      
       showMessage({
         message: "Success",
-        description: "OTP is correct",
+        description: "OTP verified successfully",
         type: "success",
       });
-      setTimeout(()=>{
-     navigation.navigate("SelectOrganizationScreen")
-      },1000)
+  
+      setTimeout(() => {
+        navigation.navigate('SelectOrganizationScreen');
+      }, 1000);
     } else {
       showMessage({
-        message: "Error",
+        message: "Error!",
         description: "Invalid OTP",
         type: "danger",
       });
     }
   };
+  
+
+ 
+  
 
   const renderOtpInput = ({ item, index }) => (
     <TextInput
@@ -87,7 +95,7 @@ const OTPVerificationScreen = () => {
         />
       </View>
       <Text style={styles.timer}>{`00:${timer < 10 ? `0${timer}` : timer}`}</Text>
-      <TouchableOpacity style={styles.continueButton} onPress={validateOtp}>
+      <TouchableOpacity style={styles.continueButton} onPress={verifyOtp}>
         <Text style={styles.continueText}>Continue</Text>
         <Arrow width={wp('5%')} height={hp('2.5%')} style={styles.arrowIcon} />
       </TouchableOpacity>
